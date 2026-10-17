@@ -1,69 +1,437 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ConvergingPaths } from "./_components/converging-paths";
+import { Deadline } from "./_components/deadline";
+import { PortraitFrame } from "./_components/portrait-frame";
+import { Reveal } from "./_components/reveal";
+import { RiseArrow } from "./_components/rise-arrow";
+import { SmoothScroll } from "./_components/smooth-scroll";
+import { YepiLockup } from "./_components/yepi-mark";
+import { programme } from "./_content/programme";
+import { mentors, portraitCount, voices } from "./_content/people";
+
+const { event, prize, eligibility } = programme;
+
+/** Guideline §05 — blue · white · mint. Always sits above the footer. */
+function LaneRule() {
+  return (
+    <div className="flex h-1.5" aria-hidden="true">
+      <div className="flex-1 bg-blue" />
+      <div className="w-6 bg-white" />
+      <div className="flex-1 bg-mint" />
+    </div>
+  );
+}
+
+function ApplyButton({
+  tone = "mint",
+  children = "Apply now",
+}: {
+  tone?: "mint" | "navy";
+  children?: string;
+}) {
+  const skin =
+    tone === "mint"
+      ? "bg-mint text-navy hover:bg-white"
+      : "bg-navy text-white hover:bg-blue";
+
+  return (
+    <Link
+      href="/apply"
+      className={`type-label inline-flex items-center gap-3 rounded-full px-8 py-4 transition-colors duration-200 ease-rise ${skin}`}
+    >
+      {children}
+      <span aria-hidden="true">↑</span>
+    </Link>
+  );
+}
+
+/** Every section shares one centred measure, so nothing leans off-axis. */
+function Band({
+  tone,
+  children,
+  className,
+}: {
+  tone: "navy" | "mist" | "white" | "mint";
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const skin = {
+    navy: "bg-navy text-white",
+    mist: "bg-mist text-navy",
+    white: "bg-white text-navy",
+    mint: "bg-mint text-navy",
+  }[tone];
+
+  return (
+    <section className={`${skin} ${className ?? ""}`}>
+      <div className="mx-auto max-w-5xl px-6 py-24 text-center lg:py-32">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function Eyebrow({ children, tone = "blue" }: { children: string; tone?: "blue" | "mint" }) {
+  return (
+    <p className={`type-label ${tone === "mint" ? "text-mint" : "text-blue"}`}>
+      {children}
+    </p>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <SmoothScroll>
+      {/* ---------------- Hero ---------------- */}
+      <header className="bg-navy text-white">
+        <div className="mx-auto max-w-5xl px-6 py-10">
+          <div className="flex justify-center">
+            <YepiLockup tone="reversed" />
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-5xl px-6 pb-20 pt-8 text-center lg:pb-24">
+          <p
+            className="type-label hero-line text-mint"
+            style={{ transitionDelay: "100ms" }}
+          >
+            Apply from 2 Oct · Ages {eligibility.ageRange}
+          </p>
+
+          <h1
+            className="type-display hero-line mx-auto mt-7 max-w-4xl text-display"
+            style={{ transitionDelay: "180ms" }}
+          >
+            {prize.pool} for young founders.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p
+            className="hero-line mx-auto mt-7 max-w-xl text-body text-white/80"
+            style={{ transitionDelay: "280ms" }}
+          >
+            Entrepreneurs apply, a shortlist is mentored and rehearsed, and
+            finalists pitch live to a judging panel on Conference Day, with
+            grants awarded on the spot.
+          </p>
+
+          <div
+            className="hero-line mt-10 flex flex-col items-center gap-5"
+            style={{ transitionDelay: "380ms" }}
+          >
+            <ApplyButton />
+            <p className="text-sm text-white/70">
+              <span className="font-semibold text-white">{event.date}</span> ·{" "}
+              {event.location} ·{" "}
+              <span className="font-semibold text-mint">
+                <Deadline iso={event.iso} fallback="Applications are open" />
+              </span>
+            </p>
+          </div>
+
+          {/* The people this is for, before anything else about the money. */}
+          <div
+            className="hero-line mx-auto mt-16 grid max-w-3xl grid-cols-4 gap-4 sm:gap-6"
+            style={{ transitionDelay: "480ms" }}
+          >
+            {Array.from({ length: portraitCount }).map((_, i) => (
+              <PortraitFrame key={i} tone={(i % 3) as 0 | 1 | 2} />
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main>
+        {/* ---------------- Who it's for ---------------- */}
+        <Band tone="mist">
+          <Reveal>
+            <Eyebrow>Who it&rsquo;s for</Eyebrow>
+          </Reveal>
+          <Reveal delay={60}>
+            <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
+              Young founders with something already moving.
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <p className="mx-auto mt-6 max-w-xl text-body text-navy/70">
+              You do not need a finished company, a polished deck, or a track
+              record. You need an idea worth backing and evidence you have
+              started.
+            </p>
+          </Reveal>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            {[
+              {
+                title: `Aged ${eligibility.ageRange}`,
+                body: "On the day of the final, in Johannesburg.",
+                tone: "blue",
+              },
+              {
+                title: "Any stage",
+                body: eligibility.stages.join(" · "),
+                tone: "mint",
+              },
+              {
+                title: "A trading name",
+                body: "A registered company name is not required to enter.",
+                tone: "navy",
+              },
+            ].map((card, i) => (
+              <Reveal key={card.title} delay={160 + i * 70} className="h-full">
+                <div className="flex h-full flex-col rounded-2xl bg-white p-7">
+                  <div
+                    className="mx-auto h-1 w-12"
+                    style={{ background: `var(--color-${card.tone})` }}
+                  />
+                  <h3 className="type-heading mt-5 text-xl">{card.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-navy/65">
+                    {card.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Band>
+
+        {/* ---------------- The barrier we removed ---------------- */}
+        <Band tone="navy">
+          <Reveal>
+            <Eyebrow tone="mint">No barrier to entry</Eyebrow>
+          </Reveal>
+          <Reveal delay={60}>
+            <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
+              No citizenship. No CIPC. No ID number.
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <p className="mx-auto mt-6 max-w-2xl text-body text-white/80">
+              Selection is on the strength of the idea, the founder, the
+              traction and the pitch — nothing else. We ask for no identity
+              numbers and no company registration numbers anywhere in the
+              application.
+            </p>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="mx-auto mt-6 max-w-2xl text-sm leading-6 text-white/55">
+              One condition, stated up front: before a grant is paid, winners
+              must show the venture is CIPC-registered — or that registration is
+              in process — and that they can legally receive funds in South
+              Africa. Winners get 60 days after the event to arrange it.
+              Nothing is checked before then.
+            </p>
+          </Reveal>
+        </Band>
+
+        {/* ---------------- How it works ---------------- */}
+        <Band tone="white">
+          <Reveal>
+            <Eyebrow>How it works</Eyebrow>
+          </Reveal>
+          <Reveal delay={60}>
+            <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
+              Apply. Get mentored. Pitch live. Get funded.
+            </h2>
+          </Reveal>
+
+          <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {programme.steps.map((step, i) => (
+              <Reveal key={step.label} delay={100 + i * 70} className="h-full">
+                <li className="flex h-full flex-col items-center">
+                  <RiseArrow
+                    tone={i % 2 === 0 ? "blue" : "mint"}
+                    className="h-14 w-5"
+                  />
+                  <p className="type-label mt-5 text-navy/40">0{i + 1}</p>
+                  <h3 className="type-heading mt-2 text-xl">{step.label}</h3>
+                  <p className="mt-2 text-sm leading-6 text-navy/65">
+                    {step.body}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+        </Band>
+
+        {/* ---------------- Prize — the converging paths play here ------- */}
+        <section className="relative isolate overflow-hidden bg-navy text-white">
+          <ConvergingPaths
+            fit="meet"
+            className="pointer-events-none absolute inset-0 mx-auto h-full w-full max-w-3xl opacity-20"
+          />
+
+          <div className="relative mx-auto max-w-5xl px-6 py-24 text-center lg:py-32">
+            <Reveal>
+              <Eyebrow tone="mint">What you can win</Eyebrow>
+            </Reveal>
+            <Reveal delay={60}>
+              <h2 className="type-display mx-auto mt-5 max-w-3xl text-display">
+                {prize.pool}
+              </h2>
+            </Reveal>
+            <Reveal delay={120}>
+              <p className="mx-auto mt-5 max-w-xl text-body text-white/75">
+                Awarded on the day, across three places, straight to the
+                venture.
+              </p>
+            </Reveal>
+
+            <div className="mt-16 grid gap-6 sm:grid-cols-3">
+              {prize.tiers.map((tier, i) => {
+                const skin = [
+                  "bg-mint text-navy",
+                  "bg-blue text-white",
+                  "bg-white text-navy",
+                ][i];
+                return (
+                  <Reveal key={tier.place} delay={160 + i * 80} className="h-full">
+                    <div
+                      className={`flex h-full flex-col justify-center rounded-2xl px-6 py-10 ${skin}`}
+                    >
+                      <p className="type-label opacity-70">{tier.place} place</p>
+                      <p className="type-display mt-3 text-3xl">{tier.amount}</p>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- Mentors — only when there are real ones ------ */}
+        {mentors.length > 0 ? (
+          <Band tone="mist">
+            <Reveal>
+              <Eyebrow>Who backs you</Eyebrow>
+            </Reveal>
+            <Reveal delay={60}>
+              <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
+                Mentored by people who&rsquo;ve built before.
+              </h2>
+            </Reveal>
+            <div className="mt-14 grid gap-8 sm:grid-cols-3 lg:grid-cols-4">
+              {mentors.map((person, i) => (
+                <Reveal key={person.name} delay={100 + i * 60}>
+                  <PortraitFrame
+                    photo={person.photo}
+                    alt={person.name}
+                    tone={(i % 3) as 0 | 1 | 2}
+                  />
+                  <h3 className="type-heading mt-4 text-base">{person.name}</h3>
+                  <p className="mt-1 text-sm text-navy/60">{person.role}</p>
+                </Reveal>
+              ))}
+            </div>
+          </Band>
+        ) : null}
+
+        {/* ---------------- Voices — only when real and consented -------- */}
+        {voices.length > 0 ? (
+          <Band tone="white">
+            <div className="space-y-16">
+              {voices.map((voice, i) => (
+                <Reveal key={voice.name} delay={i * 80}>
+                  <figure className="mx-auto max-w-3xl">
+                    <PortraitFrame
+                      photo={voice.photo}
+                      alt={voice.name}
+                      tone={(i % 3) as 0 | 1 | 2}
+                      className="mx-auto w-28"
+                    />
+                    <blockquote className="type-heading mt-7 text-h2 leading-tight">
+                      &ldquo;{voice.quote}&rdquo;
+                    </blockquote>
+                    <figcaption className="mt-5 text-sm text-navy/60">
+                      <span className="font-semibold text-navy">
+                        {voice.name}
+                      </span>{" "}
+                      · {voice.role}
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
+          </Band>
+        ) : null}
+
+        {/* ---------------- Key dates ---------------- */}
+        <Band tone="mist">
+          <Reveal>
+            <Eyebrow>Key dates</Eyebrow>
+          </Reveal>
+          <Reveal delay={60}>
+            <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
+              The run to Conference Day.
+            </h2>
+          </Reveal>
+
+          <dl className="mx-auto mt-12 max-w-2xl divide-y divide-navy/10 border-y border-navy/10 text-left">
+            {programme.dates.map((date, i) => (
+              <Reveal key={date.label} delay={100 + i * 50}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-5">
+                  <dt className="type-label text-navy/55">{date.label}</dt>
+                  <dd
+                    className={
+                      date.status === "tbc"
+                        ? "text-body text-navy/40"
+                        : "text-body font-semibold"
+                    }
+                  >
+                    {date.status === "tbc" ? "To be announced" : date.value}
+                  </dd>
+                </div>
+              </Reveal>
+            ))}
+          </dl>
+        </Band>
+
+        {/* ---------------- Closing ---------------- */}
+        <Band tone="mint">
+          <Reveal>
+            <h2 className="type-display mx-auto max-w-3xl text-display">
+              {programme.tagline}
+            </h2>
+          </Reveal>
+          <Reveal delay={80}>
+            <p className="mx-auto mt-6 max-w-md text-body text-navy/70">
+              Applications are open. It takes one sitting, and no documents you
+              don&rsquo;t already have.
+            </p>
+          </Reveal>
+          <Reveal delay={140}>
+            <div className="mt-10 flex justify-center">
+              <ApplyButton tone="navy" />
+            </div>
+          </Reveal>
+        </Band>
+      </main>
+
+      <LaneRule />
+
+      <footer className="bg-navy text-white">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 py-14 text-center">
+          <YepiLockup tone="reversed" />
+          {/* Guideline §02 — endorsed lockup, required on all external comms.
+              Typeset until the official conference logo is supplied. */}
+          <div>
+            <p className="type-label text-mint">A programme of</p>
+            <p className="type-heading mt-2 text-lg leading-tight">
+              Wisdom for Business
+              <br />
+              Conference 2026
+            </p>
+          </div>
+          <p className="text-xs text-white/45">
+            {event.location} · {event.date} ·{" "}
+            <Link href="/privacy" className="underline underline-offset-4">
+              Privacy
+            </Link>{" "}
+            ·{" "}
+            <Link href="/terms" className="underline underline-offset-4">
+              Terms
+            </Link>
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </footer>
+    </SmoothScroll>
   );
 }
