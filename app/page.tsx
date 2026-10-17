@@ -7,7 +7,7 @@ import { RiseArrow } from "./_components/rise-arrow";
 import { SmoothScroll } from "./_components/smooth-scroll";
 import { YepiLockup } from "./_components/yepi-mark";
 import { programme } from "./_content/programme";
-import { mentors, portraitCount, voices } from "./_content/people";
+import { mentors, portraits, voices } from "./_content/people";
 
 const { event, prize, eligibility } = programme;
 
@@ -133,8 +133,15 @@ export default function Home() {
             className="hero-line mx-auto mt-16 grid max-w-3xl grid-cols-4 gap-4 sm:gap-6"
             style={{ transitionDelay: "480ms" }}
           >
-            {Array.from({ length: portraitCount }).map((_, i) => (
-              <PortraitFrame key={i} tone={(i % 3) as 0 | 1 | 2} />
+            {portraits.map((p, i) => (
+              // Decorative: the surrounding copy carries the meaning, and
+              // these people are not participants.
+              <PortraitFrame
+                key={p.photo ?? i}
+                photo={p.photo}
+                alt=""
+                tone={(i % 3) as 0 | 1 | 2}
+              />
             ))}
           </div>
         </div>
@@ -253,13 +260,15 @@ export default function Home() {
         </Band>
 
         {/* ---------------- Prize — the converging paths play here ------- */}
-        <section className="relative isolate overflow-hidden bg-navy text-white">
-          <ConvergingPaths
-            fit="meet"
-            className="pointer-events-none absolute inset-0 mx-auto h-full w-full max-w-3xl opacity-20"
-          />
+        {/* Guideline §05 — the two bands at large scale, cropped by the frame.
+            Given its own full-bleed stage rather than washed out behind text,
+            and played on scroll so it lands as you arrive. */}
+        <div className="flex h-[clamp(18rem,38vw,32rem)] items-stretch justify-center overflow-hidden bg-navy">
+          <ConvergingPaths fit="meet" className="h-full" />
+        </div>
 
-          <div className="relative mx-auto max-w-5xl px-6 py-24 text-center lg:py-32">
+        <section className="bg-navy text-white">
+          <div className="mx-auto max-w-5xl px-6 pb-24 pt-16 text-center lg:pb-32">
             <Reveal>
               <Eyebrow tone="mint">What you can win</Eyebrow>
             </Reveal>
@@ -275,7 +284,7 @@ export default function Home() {
               </p>
             </Reveal>
 
-            <div className="mt-16 grid gap-6 sm:grid-cols-3">
+            <div className="mt-14 grid gap-6 sm:grid-cols-3">
               {prize.tiers.map((tier, i) => {
                 const skin = [
                   "bg-mint text-navy",

@@ -30,9 +30,17 @@ export const mentors: Person[] = [];
 export const voices: Voice[] = [];
 
 /**
- * The portraits in "who this is for" are illustrative, not identified
- * individuals, so they carry no names. Until photography is supplied they
- * render as brand graphic frames, which is a finished look rather than a
- * broken one.
+ * Illustrative imagery only. These are stock photographs of people with no
+ * connection to the programme, so they carry no names, no roles and no
+ * quotes, and are marked decorative for assistive technology. See
+ * public/people/ATTRIBUTION.md — they should be replaced with real South
+ * African founders before launch.
+ *
+ * A frame with no `photo` falls back to a drawn portrait slot.
  */
-export const portraitCount = 4;
+export const portraits: { photo?: string }[] = [
+  { photo: "/people/founder-1.jpg" },
+  { photo: "/people/founder-2.jpg" },
+  { photo: "/people/founder-3.jpg" },
+  { photo: "/people/founder-4.jpg" },
+];

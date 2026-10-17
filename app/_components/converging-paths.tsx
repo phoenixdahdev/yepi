@@ -33,8 +33,8 @@ export function ConvergingPaths({
     >
       <svg
         viewBox="0 0 480 640"
-        preserveAspectRatio={`xMidYMax ${fit}`}
-        className="h-full w-full"
+        preserveAspectRatio={fit === "meet" ? "xMidYMid meet" : "xMidYMax slice"}
+        className="h-full w-auto"
       >
         <g fill="none" strokeWidth="88">
           <g className="path-sweep">
