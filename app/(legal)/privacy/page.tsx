@@ -11,6 +11,7 @@ import { Bullets, Pending, Section } from "../_components/prose";
 export const metadata: Metadata = {
   title: "Privacy notice",
   description: `How ${programme.name} collects, uses and protects your personal information, in line with POPIA.`,
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

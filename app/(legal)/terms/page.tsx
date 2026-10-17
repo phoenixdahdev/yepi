@@ -10,6 +10,7 @@ import { Bullets, Pending, Section } from "../_components/prose";
 export const metadata: Metadata = {
   title: "Terms of participation",
   description: `The rules for entering ${programme.fullName} (${programme.name}).`,
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

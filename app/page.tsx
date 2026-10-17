@@ -8,8 +8,63 @@ import { SmoothScroll } from "./_components/smooth-scroll";
 import { YepiLockup } from "./_components/yepi-mark";
 import { programme } from "./_content/programme";
 import { mentors, portraits, voices } from "./_content/people";
+import { organisation as org } from "./_content/organisation";
+import { siteUrl } from "./_lib/site";
 
 const { event, prize, eligibility } = programme;
+
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
+/**
+ * Event structured data, so search engines can show the date, place and
+ * entry terms directly. Every field is a fact we actually hold — the
+ * organiser is only named once a real legal name has been supplied, since
+ * emitting a TODO into structured data would publish a placeholder as truth.
+ */
+function EventJsonLd() {
+  const named = !org.legalName.startsWith("TODO");
+
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: `${programme.name} — ${programme.fullName}`,
+    description: `${prize.pool} awarded to young founders aged ${eligibility.ageRange}. No South African citizenship or CIPC registration required to apply.`,
+    startDate: event.iso,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    url: siteUrl("/"),
+    location: {
+      "@type": "Place",
+      name: event.location,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Johannesburg",
+        addressCountry: "ZA",
+      },
+    },
+    superEvent: { "@type": "Event", name: programme.parent },
+    ...(named
+      ? { organizer: { "@type": "Organization", name: org.legalName } }
+      : {}),
+    offers: {
+      "@type": "Offer",
+      price: 0,
+      priceCurrency: "ZAR",
+      availability: "https://schema.org/InStock",
+      url: siteUrl("/apply"),
+      validFrom: "2026-10-02T00:00:00+02:00",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
 
 /** Guideline §05 — blue · white · mint. Always sits above the footer. */
 function LaneRule() {
@@ -82,6 +137,7 @@ function Eyebrow({ children, tone = "blue" }: { children: string; tone?: "blue" 
 export default function Home() {
   return (
     <SmoothScroll>
+      <EventJsonLd />
       {/* ---------------- Hero ---------------- */}
       <header className="bg-navy text-white">
         <div className="mx-auto max-w-5xl px-6 py-10">

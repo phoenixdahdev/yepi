@@ -4,18 +4,8 @@ import { z } from "zod";
 import { findLatestByEmail } from "../_lib/application";
 import { statusRequestSchema, type ActionResult } from "../_lib/schemas";
 import { sendMail, statusLinkEmail } from "../_lib/mail";
+import { siteOrigin } from "../_lib/site";
 import { MAGIC_LINK_TTL, signToken } from "../_lib/session";
-
-function siteOrigin(): string {
-  // Read at runtime, not inlined at build: a NEXT_PUBLIC_ var is baked
-  // into the bundle, so changing the domain would need a rebuild.
-  const configured = process.env.SITE_URL;
-  if (configured) return configured.replace(/\/$/, "");
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  return "http://localhost:3000";
-}
 
 export async function requestStatusLink(values: {
   email: string;
