@@ -6,11 +6,52 @@
  * documents and needs a real value before launch.
  */
 
+export type ProgrammeDate = {
+  label: string;
+  value: string;
+  status: "done" | "upcoming" | "tbc";
+};
+
+/** No shortlist round: applications go straight to finalist selection. */
+const dates: ProgrammeDate[] = [
+    {
+      label: "Applications open",
+      value: "Saturday 19 December 2026",
+      status: "upcoming",
+    },
+    {
+      label: "Applications close",
+      value: "Thursday 24 December 2026, midnight",
+      status: "upcoming",
+    },
+    {
+      label: "Finalists announced",
+      value: "Saturday 26 December 2026",
+      status: "upcoming",
+    },
+    {
+      label: "Live pitch & awards",
+      value: "Saturday 31 October 2026",
+      status: "upcoming",
+    },
+  ];
+
 export const programme = {
   name: "YEPI",
   fullName: "Young Entrepreneurs Pitch Initiative",
   parent: "Wisdom for Business Conference 2026",
   tagline: "Where young ideas rise.",
+
+  /** Applications close before the final; the hero counts down to this,
+   *  since it is the deadline an applicant can still act on. */
+  applications: {
+    opensIso: "2026-12-19T00:00:00+02:00",
+    opens: "Saturday 19 December 2026",
+    closesIso: "2026-12-24T23:59:59+02:00",
+    closes: "Thursday 24 December 2026, midnight",
+    finalistsIso: "2026-12-26T00:00:00+02:00",
+    finalists: "Saturday 26 December 2026",
+  },
 
   event: {
     /** Machine-readable, for the countdown. */
@@ -35,27 +76,17 @@ export const programme = {
     stages: ["Idea", "Pre-revenue", "Early revenue", "Growth", "Scale"],
   },
 
-  dates: [
-    { label: "Applications open", value: "Friday 2 October 2026", status: "done" },
-    { label: "Applications close", value: "TBC", status: "tbc" },
-    { label: "Shortlist announced", value: "TBC", status: "tbc" },
-    { label: "Finalists announced", value: "TBC", status: "tbc" },
-    {
-      label: "Live pitch & awards",
-      value: "Saturday 31 October 2026",
-      status: "upcoming",
-    },
-  ],
+  dates,
 
   /** Guideline §04 label specimen: APPLY → GET MENTORED → PITCH LIVE → GET FUNDED */
   steps: [
     {
       label: "Apply",
-      body: "A short application about you, your venture and your traction. No ID numbers, no company registration.",
+      body: "A short application about you, your venture and your traction. No company registration needed.",
     },
     {
       label: "Get mentored",
-      body: "A shortlist is selected on merit, then mentored and rehearsed by people who have built before.",
+      body: "Finalists are selected on merit, then mentored and rehearsed by people who have built before.",
     },
     {
       label: "Pitch live",

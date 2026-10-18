@@ -61,11 +61,13 @@ export default function PrivacyPage() {
               </>,
               <>
                 <strong className="text-foreground">
-                  Citizenship or legal status:
+                  Your South African ID number:
                 </strong>{" "}
-                an optional free-text note. It is for information only. It does
-                not affect whether you are eligible, and it is never scored.
-                Please do not write more there than you need to.
+                required to apply. We use it to confirm you are eligible and to
+                check that the date of birth you gave matches it. An ID number
+                also indicates whether you are a citizen or a permanent
+                resident; we do not ask you to state that separately, and we do
+                not use it to rank or score your application.
               </>,
               <>
                 <strong className="text-foreground">Your venture:</strong> its
@@ -99,24 +101,25 @@ export default function PrivacyPage() {
           />
           <p className="rounded-xl border border-border bg-white p-5">
             <strong className="text-foreground">
-              What we deliberately do not ask for.
+              What we do not ask for.
             </strong>{" "}
-            At no point in applying, being shortlisted or becoming a finalist do
-            we ask for a South African ID number, a passport number, or a CIPC
-            registration number. Selection does not depend on them, so we do not
-            collect them.
+            Applying requires your ID number and nothing else of that kind. We
+            do not ask for a passport number, a CIPC registration number, or
+            banking details at any point in applying or becoming a finalist.
+            Those are only requested from winners, at the moment a grant is
+            about to be paid.
           </p>
         </Section>
 
         <Section id="winners" n={3} title="If you are selected to receive a grant">
           <p>
-            This is the one stage where formal documents are needed, because
-            money is about to move. Before a grant is paid we will ask for proof
-            that the venture is CIPC-registered (or that registration is in
-            process), proof that you can lawfully receive funds in South Africa —
-            which may mean a passport and valid visa or permit, a permanent
-            residence permit, or a South African ID — and the banking and tax
-            details our finance team needs.
+            This is the stage where further documents are needed, because
+            money is about to move. Before a grant is paid we will ask for
+            proof that the venture is CIPC-registered (or that registration is
+            in process), and the banking and tax details our finance team
+            requires. Because applying already requires a South African ID, we
+            do not need separate proof that you may lawfully receive funds
+            here.
           </p>
           <p>
             We ask for these only from people who have been selected, only once

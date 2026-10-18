@@ -55,7 +55,7 @@ export default async function SubmittedPage() {
           </li>
           <li className="flex gap-4">
             <span className="mt-2.5 h-1.5 w-6 shrink-0 bg-mint" />
-            A shortlist is selected, mentored and rehearsed.
+            Finalists are selected, mentored and rehearsed.
           </li>
           <li className="flex gap-4">
             <span className="mt-2.5 h-1.5 w-6 shrink-0 bg-blue" />

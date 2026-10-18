@@ -20,7 +20,6 @@ export type ApplicationStatus =
   | "draft"
   | "submitted"
   | "under_review"
-  | "shortlisted"
   | "finalist"
   | "winner"
   | "waitlisted"
@@ -176,12 +175,6 @@ export const STATUS_VIEW: Record<
     action: null,
     tone: "blue",
   },
-  shortlisted: {
-    label: "Shortlisted",
-    meaning: "You have been selected for the next stage.",
-    action: null,
-    tone: "mint",
-  },
   finalist: {
     label: "Finalist",
     meaning: "You have been selected for the live final.",
@@ -197,7 +190,7 @@ export const STATUS_VIEW: Record<
   },
   waitlisted: {
     label: "Waitlisted",
-    meaning: "Your application is being held pending the outcome of the shortlist.",
+    meaning: "Your application is being held pending the final selection.",
     action: null,
     tone: "navy",
   },

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { DateOfBirthField } from "./date-of-birth-field";
-import { Textarea } from "@/components/ui/textarea";
 import { founderSchema, type FounderInput } from "../../_lib/schemas";
 import { saveFounder } from "../actions";
 import { FieldGrid, FieldRow, FormAlert, StepActions, WIDE, useStepMutation } from "./form-kit";
@@ -15,10 +14,10 @@ export function FounderForm({ defaults }: { defaults?: FounderInput }) {
     defaultValues: {
       fullName: defaults?.fullName ?? "",
       dateOfBirth: defaults?.dateOfBirth ?? "",
+      idNumber: defaults?.idNumber ?? "",
       email: defaults?.email ?? "",
       mobile: defaults?.mobile ?? "",
       profileUrl: defaults?.profileUrl ?? "",
-      legalStatusNote: defaults?.legalStatusNote ?? "",
     },
   });
   const { mutation, formError, busy } = useStepMutation(saveFounder, form);
@@ -31,6 +30,22 @@ export function FounderForm({ defaults }: { defaults?: FounderInput }) {
       <FieldGrid>
         <FieldRow name="fullName" label="Full name" error={errors.fullName?.message}>
           <Input id="fullName" autoComplete="name" {...form.register("fullName")} />
+        </FieldRow>
+
+        <FieldRow
+          name="idNumber"
+          label="South African ID number"
+          hint="13 digits. We check it against your date of birth."
+          error={errors.idNumber?.message}
+        >
+          <Input
+            id="idNumber"
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={16}
+            placeholder="0000000000000"
+            {...form.register("idNumber")}
+          />
         </FieldRow>
 
         <FieldRow
@@ -81,15 +96,6 @@ export function FounderForm({ defaults }: { defaults?: FounderInput }) {
           <Input id="profileUrl" type="url" placeholder="https://" {...form.register("profileUrl")} />
         </FieldRow>
 
-        <FieldRow
-          className={WIDE}
-          name="legalStatusNote"
-          label="Country of citizenship or legal status in South Africa"
-          hint="Optional, and for information only. This does not affect your eligibility or how your application is scored."
-          error={errors.legalStatusNote?.message}
-        >
-          <Textarea id="legalStatusNote" rows={3} {...form.register("legalStatusNote")} />
-        </FieldRow>
       </FieldGrid>
 
       <StepActions busy={busy} />

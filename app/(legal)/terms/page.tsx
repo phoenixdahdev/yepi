@@ -57,6 +57,9 @@ export default function TermsPage() {
                 {eligibility.stages.join(", ").toLowerCase()}.
               </>,
               <>
+                A valid South African ID number. We check it when you apply.
+              </>,
+              <>
                 A venture you can describe and pitch. A trading name is enough;
                 a registered company name is not required.
               </>,
@@ -64,12 +67,14 @@ export default function TermsPage() {
           />
           <p className="rounded-xl border border-border bg-white p-5">
             <strong className="text-foreground">
-              No citizenship or CIPC requirement to enter.
+              No company registration required to enter.
             </strong>{" "}
-            You do not need South African citizenship, and you do not need a
-            CIPC-registered company, to apply, be shortlisted, or reach the
-            final. Selection is on merit alone. The single exception is set out
-            in section 7, and it applies only once you have won.
+            You do not need a CIPC-registered company to apply or to reach the
+            final — a trading name is enough, and selection is on merit alone.
+            You do need a valid South African ID number, which means entry is
+            limited to South African citizens and permanent residents. The
+            registration requirement in section 7 applies only once you have
+            won.
           </p>
           <p>
             People involved in organising, judging or mentoring the programme,
@@ -101,9 +106,9 @@ export default function TermsPage() {
             The committee scores privately and those scores and notes are
             internal. We will not share them with you or explain individual
             decisions, and the committee&rsquo;s decisions at every stage are
-            final. From the applications we select a shortlist, from the
-            shortlist a set of finalists, and the finalists pitch live to a
-            judging panel at the event.
+            final. Finalists are selected directly from the applications —
+            there is no intermediate shortlist round — and the finalists pitch
+            live to a judging panel at the event.
           </p>
         </Section>
 
@@ -128,7 +133,7 @@ export default function TermsPage() {
           <p>
             You give us permission to read, copy and circulate your materials
             internally for the purpose of assessing and running the programme,
-            and — if you are shortlisted, selected as a finalist, or win — to
+            and — if you are selected as a finalist, or win — to
             use your name, your venture&rsquo;s name and a short description of
             it when we announce and report on the programme. Tell us in writing
             if you would rather we did not, and we will respect that.
@@ -157,13 +162,12 @@ export default function TermsPage() {
           title="The one condition, if you win"
         >
           <p>
-            Before any grant is paid, a winning venture must show us that it is
-            registered with CIPC — or that registration has been submitted and
-            is in process — and that the person or entity receiving the money is
-            legally able to do so in South Africa. Depending on your
-            circumstances that may be a passport with a valid visa or permit, a
-            permanent residence permit, or a South African ID. We will also need
-            the banking and tax details our finance team requires.
+            Before any grant is paid, a winning venture must show us that it
+            is registered with CIPC — or that registration has been submitted
+            and is in process. We will also need the banking and tax details
+            our finance team requires. Because entry already requires a South
+            African ID, no further proof of your right to receive funds here is
+            needed.
           </p>
           <p>
             Winners have{" "}

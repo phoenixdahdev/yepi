@@ -30,7 +30,7 @@ function EventJsonLd() {
     "@context": "https://schema.org",
     "@type": "Event",
     name: `${programme.name} — ${programme.fullName}`,
-    description: `${prize.pool} awarded to young founders aged ${eligibility.ageRange}. No South African citizenship or CIPC registration required to apply.`,
+    description: `${prize.pool} awarded to young founders aged ${eligibility.ageRange}. A valid South African ID is required; a registered company is not.`,
     startDate: event.iso,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -165,9 +165,9 @@ export default function Home() {
             className="hero-line mx-auto mt-7 max-w-xl text-body text-white/80"
             style={{ transitionDelay: "280ms" }}
           >
-            Entrepreneurs apply, a shortlist is mentored and rehearsed, and
-            finalists pitch live to a judging panel on Conference Day, with
-            grants awarded on the spot.
+            Entrepreneurs apply, finalists are selected on merit, mentored
+            and rehearsed, then pitch live to a judging panel on Conference
+            Day, with grants awarded on the spot.
           </p>
 
           <div
@@ -179,7 +179,10 @@ export default function Home() {
               <span className="font-semibold text-white">{event.date}</span> ·{" "}
               {event.location} ·{" "}
               <span className="font-semibold text-mint">
-                <Deadline iso={event.iso} fallback="Applications are open" />
+                <Deadline
+                  iso={programme.applications.closesIso}
+                  fallback={`Applications open ${programme.applications.opens}`}
+                />
               </span>
             </p>
           </div>
@@ -235,8 +238,8 @@ export default function Home() {
                 tone: "mint",
               },
               {
-                title: "A trading name",
-                body: "A registered company name is not required to enter.",
+                title: "A valid SA ID",
+                body: "A registered company is not required — a trading name is enough.",
                 tone: "navy",
               },
             ].map((card, i) => (
@@ -259,28 +262,28 @@ export default function Home() {
         {/* ---------------- The barrier we removed ---------------- */}
         <Band tone="navy">
           <Reveal>
-            <Eyebrow tone="mint">No barrier to entry</Eyebrow>
+            <Eyebrow tone="mint">What you need</Eyebrow>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="type-display mx-auto mt-5 max-w-3xl text-h2">
-              No citizenship. No CIPC. No ID number.
+              No company. No CIPC. Just a valid SA ID.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mx-auto mt-6 max-w-2xl text-body text-white/80">
               Selection is on the strength of the idea, the founder, the
-              traction and the pitch — nothing else. We ask for no identity
-              numbers and no company registration numbers anywhere in the
-              application.
+              traction and the pitch. You do not need a registered company to
+              enter — a trading name is enough. You do need a valid South
+              African ID number, which we check when you apply.
             </p>
           </Reveal>
           <Reveal delay={180}>
             <p className="mx-auto mt-6 max-w-2xl text-sm leading-6 text-white/55">
-              One condition, stated up front: before a grant is paid, winners
-              must show the venture is CIPC-registered — or that registration is
-              in process — and that they can legally receive funds in South
-              Africa. Winners get 60 days after the event to arrange it.
-              Nothing is checked before then.
+              Before a grant is paid, winners must also show the venture is
+              CIPC-registered — or that registration is in process — and
+              provide the banking details our finance team needs. Winners get
+              60 days after the event to arrange that. Nothing beyond your ID
+              is checked when you apply.
             </p>
           </Reveal>
         </Band>

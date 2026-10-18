@@ -33,8 +33,8 @@ export default function ApplyLayout({ children }: LayoutProps<"/apply">) {
 
       <footer className="border-t border-navy/10 px-6 py-8">
         <p className="mx-auto max-w-3xl text-sm text-navy/50">
-          We never ask for an ID number or a company registration number to
-          apply.{" "}
+          We ask for your ID number to confirm eligibility, never for a
+          company registration number.{" "}
           <Link href="/privacy" className="underline underline-offset-4">
             How we handle your information
           </Link>
