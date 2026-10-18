@@ -4,7 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { DateOfBirthField } from "./date-of-birth-field";
-import { founderSchema, type FounderInput } from "../../_lib/schemas";
+import {
+  AGE_REFERENCE_LABEL,
+  founderSchema,
+  type FounderInput,
+} from "../../_lib/schemas";
 import { saveFounder } from "../actions";
 import { FieldGrid, FieldRow, FormAlert, StepActions, WIDE, useStepMutation } from "./form-kit";
 
@@ -51,7 +55,7 @@ export function FounderForm({ defaults }: { defaults?: FounderInput }) {
         <FieldRow
           name="dateOfBirth"
           label="Date of birth"
-          hint="YEPI is open to founders aged 18 to 35 on 31 October 2026."
+          hint={`YEPI is open to founders aged 18 to 35 on ${AGE_REFERENCE_LABEL}.`}
           error={errors.dateOfBirth?.message}
         >
           <Controller

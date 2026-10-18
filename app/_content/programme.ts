@@ -31,7 +31,7 @@ const dates: ProgrammeDate[] = [
     },
     {
       label: "Live pitch & awards",
-      value: "Saturday 31 October 2026",
+      value: "Wednesday 30 December 2026",
       status: "upcoming",
     },
   ];
@@ -55,9 +55,9 @@ export const programme = {
 
   event: {
     /** Machine-readable, for the countdown. */
-    iso: "2026-10-31T09:00:00+02:00",
-    date: "Saturday 31 October 2026",
-    shortDate: "31 Oct 2026",
+    iso: "2026-12-30T09:00:00+02:00",
+    date: "Wednesday 30 December 2026",
+    shortDate: "30 Dec 2026",
     location: "Johannesburg, South Africa",
   },
 
