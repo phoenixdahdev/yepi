@@ -57,7 +57,9 @@ export default function TermsPage() {
                 {eligibility.stages.join(", ").toLowerCase()}.
               </>,
               <>
-                A valid South African ID number. We check it when you apply.
+                Valid identification: a South African ID number, or a passport
+                if you are living in South Africa lawfully on a visa or
+                permit. We check it when you apply.
               </>,
               <>
                 A venture you can describe and pitch. A trading name is enough;
@@ -69,12 +71,12 @@ export default function TermsPage() {
             <strong className="text-foreground">
               No company registration required to enter.
             </strong>{" "}
-            You do not need a CIPC-registered company to apply or to reach the
-            final — a trading name is enough, and selection is on merit alone.
-            You do need a valid South African ID number, which means entry is
-            limited to South African citizens and permanent residents. The
-            registration requirement in section 7 applies only once you have
-            won.
+            You do not need a CIPC-registered company to apply or to reach
+            the final — a trading name is enough, and selection is on merit
+            alone. You do need valid identification, and you must be living in
+            South Africa lawfully. Citizenship is not required: a passport
+            held with a valid visa or permit is accepted. The registration
+            requirement in section 7 applies only once you have won.
           </p>
           <p>
             People involved in organising, judging or mentoring the programme,
@@ -164,10 +166,10 @@ export default function TermsPage() {
           <p>
             Before any grant is paid, a winning venture must show us that it
             is registered with CIPC — or that registration has been submitted
-            and is in process. We will also need the banking and tax details
-            our finance team requires. Because entry already requires a South
-            African ID, no further proof of your right to receive funds here is
-            needed.
+            and is in process, and that the person or entity receiving the
+            money may lawfully do so in South Africa. If you applied on a
+            passport that means a valid visa or permit. We will also need the
+            banking and tax details our finance team requires.
           </p>
           <p>
             Winners have{" "}

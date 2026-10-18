@@ -100,6 +100,24 @@ export function parseSaId(raw: string): SaId | null {
   };
 }
 
+export const ID_TYPES = ["sa-id", "passport"] as const;
+
+/**
+ * Deliberately permissive. Passport formats differ by issuing country, so
+ * anything stricter than "6-12 letters and digits" would reject real
+ * documents. Legal right to be in South Africa is evidenced at payout, not
+ * inferred from the number here.
+ */
+export const passportNumber = z
+  .string()
+  .trim()
+  .min(1, "Passport number is required.")
+  .transform((v) => v.toUpperCase().replace(/\s|-/g, ""))
+  .refine(
+    (v) => /^[A-Z0-9]{6,12}$/.test(v),
+    "Enter a passport number of 6 to 12 letters and digits.",
+  );
+
 export const saIdNumber = z
   .string()
   .trim()
@@ -120,7 +138,12 @@ const optionalUrl = z
 export const founderSchema = z
   .object({
   fullName: text(2, 120, "Full name"),
-  idNumber: saIdNumber,
+  /** Either document is accepted: entry is open to anyone lawfully in
+   *  South Africa, not only to citizens and permanent residents. */
+  idType: z.enum(ID_TYPES, { error: "Choose which document you'll use." }),
+  idNumber: z.string().trim().optional(),
+  passportNumber: z.string().trim().optional(),
+  nationality: z.string().trim().optional(),
   dateOfBirth: z
     .string()
     .min(1, "Date of birth is required.")
@@ -133,23 +156,51 @@ export const founderSchema = z
   mobile: text(6, 32, "Mobile number"),
   profileUrl: optionalUrl,
   })
-  // The ID encodes a date of birth, so a mismatch means one of the two
-  // fields is mistyped. Catching it here beats discovering it at payout.
-  .refine(
-    (v) => {
-      const parsed = parseSaId(v.idNumber);
-      // Each field reports its own format errors; only compare two good ones.
-      if (!parsed || !/^\d{4}-\d{2}-\d{2}$/.test(v.dateOfBirth)) return true;
-      // Compare as date strings: reading UTC components off one side and
-      // local components off the other is off by a day west of Greenwich.
-      return parsed.dateOfBirth.toISOString().slice(0, 10) === v.dateOfBirth;
-    },
-    {
-      path: ["idNumber"],
-      error:
-        "This ID number carries a different date of birth to the one you chose.",
-    },
-  );
+  .superRefine((v, ctx) => {
+    if (v.idType === "sa-id") {
+      const result = saIdNumber.safeParse(v.idNumber ?? "");
+      if (!result.success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["idNumber"],
+          message: result.error.issues[0].message,
+        });
+        return;
+      }
+      // The ID encodes a date of birth, so a mismatch means one of the two
+      // fields is mistyped. Catching it here beats finding out at payout.
+      const parsed = parseSaId(result.data);
+      if (parsed && /^\d{4}-\d{2}-\d{2}$/.test(v.dateOfBirth)) {
+        // Compare as date strings: reading UTC components off one side and
+        // local components off the other is off by a day west of Greenwich.
+        if (parsed.dateOfBirth.toISOString().slice(0, 10) !== v.dateOfBirth) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["idNumber"],
+            message:
+              "This ID number carries a different date of birth to the one you chose.",
+          });
+        }
+      }
+      return;
+    }
+
+    const passport = passportNumber.safeParse(v.passportNumber ?? "");
+    if (!passport.success) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["passportNumber"],
+        message: passport.error.issues[0].message,
+      });
+    }
+    if (!v.nationality || v.nationality.length < 2) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["nationality"],
+        message: "Tell us which country issued your passport.",
+      });
+    }
+  });
 
 export const ventureSchema = z.object({
   ventureName: text(2, 120, "Venture name"),

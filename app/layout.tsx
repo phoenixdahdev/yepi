@@ -13,7 +13,7 @@ const archivo = Archivo({
   display: "swap",
 });
 
-const description = `${programme.prize.pool} for young founders. ${programme.fullName}, the flagship entrepreneurship track of the ${programme.parent}. Open to founders aged ${programme.eligibility.ageRange} with a valid South African ID. A registered company is not required.`;
+const description = `${programme.prize.pool} for young founders. ${programme.fullName}, the flagship entrepreneurship track of the ${programme.parent}. Open to founders aged ${programme.eligibility.ageRange} living lawfully in South Africa, on a South African ID or a passport. A registered company is not required.`;
 
 export const metadata: Metadata = {
   // Makes every relative URL below — and the generated OG image — absolute.

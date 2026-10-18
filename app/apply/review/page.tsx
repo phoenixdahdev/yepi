@@ -60,7 +60,16 @@ export default async function ReviewStep() {
       <div className="mt-12 rounded-2xl bg-white p-6 sm:p-8">
         <Section title="About you" editHref="/apply">
           <Row label="Full name" value={founder?.fullName} />
-          <Row label="ID number" value={founder?.idNumber} />
+          <Row
+            label={founder?.idType === "passport" ? "Passport" : "ID number"}
+            value={
+              founder?.idType === "passport"
+                ? [founder.passportNumber, founder.nationality]
+                    .filter(Boolean)
+                    .join(" · ")
+                : founder?.idNumber
+            }
+          />
           <Row label="Date of birth" value={founder?.dateOfBirth} />
           <Row label="Email" value={founder?.email} />
           <Row label="Mobile" value={founder?.mobile} />
