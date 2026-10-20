@@ -21,12 +21,12 @@ const dates: ProgrammeDate[] = [
     },
     {
       label: "Applications close",
-      value: "Saturday 24 October 2026, midnight",
+      value: "Tuesday 27 October 2026, midnight",
       status: "upcoming",
     },
     {
       label: "Finalists announced",
-      value: "Monday 26 October 2026",
+      value: "Wednesday 28 October 2026",
       status: "upcoming",
     },
     {
@@ -47,10 +47,10 @@ export const programme = {
   applications: {
     opensIso: "2026-10-19T00:00:00+02:00",
     opens: "Monday 19 October 2026",
-    closesIso: "2026-10-24T23:59:59+02:00",
-    closes: "Saturday 24 October 2026, midnight",
-    finalistsIso: "2026-10-26T00:00:00+02:00",
-    finalists: "Monday 26 October 2026",
+    closesIso: "2026-10-27T23:59:59+02:00",
+    closes: "Tuesday 27 October 2026, midnight",
+    finalistsIso: "2026-10-28T00:00:00+02:00",
+    finalists: "Wednesday 28 October 2026",
   },
 
   event: {
