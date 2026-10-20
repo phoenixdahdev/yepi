@@ -16,22 +16,22 @@ export type ProgrammeDate = {
 const dates: ProgrammeDate[] = [
     {
       label: "Applications open",
-      value: "Saturday 19 December 2026",
+      value: "Monday 19 October 2026",
       status: "upcoming",
     },
     {
       label: "Applications close",
-      value: "Thursday 24 December 2026, midnight",
+      value: "Saturday 24 October 2026, midnight",
       status: "upcoming",
     },
     {
       label: "Finalists announced",
-      value: "Saturday 26 December 2026",
+      value: "Monday 26 October 2026",
       status: "upcoming",
     },
     {
       label: "Live pitch & awards",
-      value: "Wednesday 30 December 2026",
+      value: "Saturday 31 October 2026",
       status: "upcoming",
     },
   ];
@@ -45,32 +45,32 @@ export const programme = {
   /** Applications close before the final; the hero counts down to this,
    *  since it is the deadline an applicant can still act on. */
   applications: {
-    opensIso: "2026-12-19T00:00:00+02:00",
-    opens: "Saturday 19 December 2026",
-    closesIso: "2026-12-24T23:59:59+02:00",
-    closes: "Thursday 24 December 2026, midnight",
-    finalistsIso: "2026-12-26T00:00:00+02:00",
-    finalists: "Saturday 26 December 2026",
+    opensIso: "2026-10-19T00:00:00+02:00",
+    opens: "Monday 19 October 2026",
+    closesIso: "2026-10-24T23:59:59+02:00",
+    closes: "Saturday 24 October 2026, midnight",
+    finalistsIso: "2026-10-26T00:00:00+02:00",
+    finalists: "Monday 26 October 2026",
   },
 
   event: {
     /** Machine-readable, for the countdown. */
-    iso: "2026-12-30T09:00:00+02:00",
-    date: "Wednesday 30 December 2026",
-    shortDate: "30 Dec 2026",
+    iso: "2026-10-31T09:00:00+02:00",
+    date: "Saturday 31 October 2026",
+    shortDate: "31 Oct 2026",
     location: "Johannesburg, South Africa",
   },
 
   prize: {
-    pool: "R500,000",
+    pool: "R170,000",
     tiers: [
-      { place: "1st", amount: "R250,000" },
-      { place: "2nd", amount: "R150,000" },
-      { place: "3rd", amount: "R100,000" },
+      { place: "1st", amount: "R100,000" },
+      { place: "2nd", amount: "R50,000" },
+      { place: "3rd", amount: "R20,000" },
     ],
   },
 
-  /** Guideline §06: "APPLY FROM 2 OCT · AGES 18–35". */
+  /** Guideline §06 sets the age rule; the dates come from `applications`. */
   eligibility: {
     ageRange: "18–35",
     stages: ["Idea", "Pre-revenue", "Early revenue", "Growth", "Scale"],

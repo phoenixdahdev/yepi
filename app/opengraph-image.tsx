@@ -17,10 +17,13 @@ const MINT = "#1de59a";
  * clip-paths do not.
  */
 export default async function Image() {
-  const [black, regular] = await Promise.all([
+  const [black, regular, mark] = await Promise.all([
     readFile(join(process.cwd(), "assets", "Archivo-900.ttf")),
     readFile(join(process.cwd(), "assets", "Archivo-400.ttf")),
+    readFile(join(process.cwd(), "public", "brand", "yepi-mark-reversed-512.png")),
   ]);
+  // satori has no filesystem; the mark travels inline.
+  const markSrc = `data:image/png;base64,${mark.toString("base64")}`;
 
   return new ImageResponse(
     (
@@ -84,11 +87,10 @@ export default async function Image() {
             </div>
           </div>
 
-          {/* The two paths, held apart by the rising arrow. */}
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 16, marginLeft: 48 }}>
-            <div style={{ display: "flex", width: 46, height: 300, background: BLUE }} />
-            <div style={{ display: "flex", width: 46, height: 430, background: "#ffffff" }} />
-            <div style={{ display: "flex", width: 46, height: 360, background: MINT }} />
+          {/* The official mark already carries the two paths and the rising
+              arrow, so it stands in for the graphic we drew by hand. */}
+          <div style={{ display: "flex", alignItems: "center", marginLeft: 56 }}>
+            <img src={markSrc} width={300} height={300} alt="" />
           </div>
         </div>
 

@@ -1,44 +1,18 @@
+import Image from "next/image";
+
 /**
- * RECONSTRUCTION — not the official asset.
+ * The supplied logo pack (public/brand). Text in these SVGs is outlined, so
+ * they need no font and can be served as plain images.
  *
- * Redrawn from the YEPI Design Guideline §02 because no logo files were
- * supplied. Two converging paths forming a Y, with the arrow rising
- * between them. When the real SVGs arrive, replace the contents of this
- * file only; every caller goes through <YepiMark /> and <YepiLockup />.
+ * Reversed variants are white-on-transparent and must only ever sit on navy —
+ * the pack is explicit that the colour mark is never used on a dark field.
+ * Minimum widths from the pack: 160px horizontal, 24px for the mark alone.
  */
 
-export function YepiMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 120 120"
-      role="img"
-      aria-label="YEPI"
-      className={className}
-    >
-      <defs>
-        {/* Guideline §05: paths are cropped by the frame, never bleeding past it. */}
-        <clipPath id="yepi-mark-frame">
-          <rect width="120" height="120" rx="25" />
-        </clipPath>
-      </defs>
-      <rect width="120" height="120" rx="25" fill="var(--color-navy)" />
-      <g clipPath="url(#yepi-mark-frame)" fill="none" strokeWidth="22">
-        <path d="M24 114 L24 68 C24 52 40 48 40 32 L40 4" stroke="var(--color-blue)" />
-        <path d="M96 114 L96 68 C96 52 80 48 80 32 L80 4" stroke="var(--color-mint)" />
-      </g>
-      {/* The rise arrow — always points up (guideline §05). */}
-      <path
-        d="M60 6 L69 24 L64.5 24 L64.5 102 L55.5 102 L55.5 24 L51 24 Z"
-        fill="#ffffff"
-      />
-    </svg>
-  );
-}
+const HORIZONTAL = { w: 456, h: 150 };
+const ENDORSED = { w: 914, h: 150 };
+const MARK = { w: 100, h: 100 };
 
-/**
- * Primary horizontal logo: mark + wordmark + subline.
- * `tone` follows guideline §02 version 01 (on light) and 04 (reversed on navy).
- */
 export function YepiLockup({
   tone = "light",
   className,
@@ -46,19 +20,56 @@ export function YepiLockup({
   tone?: "light" | "reversed";
   className?: string;
 }) {
-  const ink = tone === "reversed" ? "text-white" : "text-navy";
-
   return (
-    <div className={`flex items-center gap-3 ${ink} ${className ?? ""}`}>
-      <YepiMark className="h-11 w-11 shrink-0" />
-      <div className="leading-none">
-        <div className="type-display text-[1.75rem] tracking-[-0.03em]">YEPI</div>
-        <div className="type-label mt-1 text-[0.5rem] tracking-[0.2em] opacity-90">
-          Young Entrepreneurs
-          <br />
-          Pitch Initiative
-        </div>
-      </div>
-    </div>
+    <Image
+      src={
+        tone === "reversed"
+          ? "/brand/yepi-horizontal-reversed.svg"
+          : "/brand/yepi-horizontal.svg"
+      }
+      alt="YEPI — Young Entrepreneurs Pitch Initiative"
+      width={HORIZONTAL.w}
+      height={HORIZONTAL.h}
+      priority
+      unoptimized
+      className={className ?? "h-14 w-auto"}
+    />
+  );
+}
+
+/**
+ * Required on external comms. Carries "A programme of Wisdom for Business
+ * Conference 2026" beside the logo, replacing the typeset version we used
+ * before the official artwork arrived.
+ */
+export function YepiEndorsed({ className }: { className?: string }) {
+  return (
+    <Image
+      src="/brand/yepi-endorsed-horizontal-reversed.svg"
+      alt="YEPI — a programme of the Wisdom for Business Conference 2026"
+      width={ENDORSED.w}
+      height={ENDORSED.h}
+      unoptimized
+      className={className ?? "h-14 w-auto"}
+    />
+  );
+}
+
+export function YepiMark({
+  tone = "light",
+  className,
+}: {
+  tone?: "light" | "reversed";
+  className?: string;
+}) {
+  return (
+    <Image
+      src={tone === "reversed" ? "/brand/yepi-mark-reversed.svg" : "/brand/yepi-mark.svg"}
+      alt="YEPI"
+      width={MARK.w}
+      height={MARK.h}
+      unoptimized
+      className={className ?? "h-10 w-10"}
+    />
   );
 }

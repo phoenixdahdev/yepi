@@ -5,7 +5,7 @@ import { PortraitFrame } from "./_components/portrait-frame";
 import { Reveal } from "./_components/reveal";
 import { RiseArrow } from "./_components/rise-arrow";
 import { SmoothScroll } from "./_components/smooth-scroll";
-import { YepiLockup } from "./_components/yepi-mark";
+import { YepiEndorsed, YepiLockup } from "./_components/yepi-mark";
 import { programme } from "./_content/programme";
 import { mentors, portraits, voices } from "./_content/people";
 import { organisation as org } from "./_content/organisation";
@@ -151,7 +151,10 @@ export default function Home() {
             className="type-label hero-line text-mint"
             style={{ transitionDelay: "100ms" }}
           >
-            Apply from 2 Oct · Ages {eligibility.ageRange}
+            Applications close {programme.applications.closes.replace(
+              ", midnight",
+              "",
+            )} · Ages {eligibility.ageRange}
           </p>
 
           <h1
@@ -478,17 +481,8 @@ export default function Home() {
 
       <footer className="bg-navy text-white">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 py-14 text-center">
-          <YepiLockup tone="reversed" />
-          {/* Guideline §02 — endorsed lockup, required on all external comms.
-              Typeset until the official conference logo is supplied. */}
-          <div>
-            <p className="type-label text-mint">A programme of</p>
-            <p className="type-heading mt-2 text-lg leading-tight">
-              Wisdom for Business
-              <br />
-              Conference 2026
-            </p>
-          </div>
+          {/* The pack requires an endorsed lockup on external comms. */}
+          <YepiEndorsed className="h-16 w-auto max-w-full" />
           <p className="text-xs text-white/45">
             {event.location} · {event.date} ·{" "}
             <Link href="/privacy" className="underline underline-offset-4">

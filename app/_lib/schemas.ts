@@ -27,11 +27,11 @@ export const CIPC_OPTIONS = ["Yes", "No", "In process", "Prefer not to say"] as 
  * Ages 18-35 (guideline §06), measured at the event date so every applicant
  * is judged against one fixed reference rather than the day they applied.
  */
-export const AGE_REFERENCE = new Date("2026-12-30T00:00:00+02:00");
+export const AGE_REFERENCE = new Date("2026-10-31T00:00:00+02:00");
 
 /** The same date in words. Kept beside AGE_REFERENCE so the rule stated in
  *  the form and the rule enforced here cannot drift apart. */
-export const AGE_REFERENCE_LABEL = "30 December 2026";
+export const AGE_REFERENCE_LABEL = "31 October 2026";
 
 export function ageAt(dob: Date, reference: Date = AGE_REFERENCE): number {
   let age = reference.getFullYear() - dob.getFullYear();

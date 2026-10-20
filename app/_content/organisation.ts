@@ -54,7 +54,7 @@ export const organisation = {
     funded: "5 years, to meet financial record-keeping obligations",
 
     /** The programme concludes on the event date. */
-    programmeEndsAt: "2026-12-30T23:59:59+02:00",
+    programmeEndsAt: "2026-10-31T23:59:59+02:00",
     abandonedDraftDays: 30,
     unsuccessfulMonths: 12,
     fundedYears: 5,
