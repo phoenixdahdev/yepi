@@ -151,10 +151,7 @@ export default function Home() {
             className="type-label hero-line text-mint"
             style={{ transitionDelay: "100ms" }}
           >
-            Applications close {programme.applications.closes.replace(
-              ", midnight",
-              "",
-            )} · Ages {eligibility.ageRange}
+            Applications are open · Ages {eligibility.ageRange}
           </p>
 
           <h1
@@ -183,8 +180,12 @@ export default function Home() {
               {event.location} ·{" "}
               <span className="font-semibold text-mint">
                 <Deadline
-                  iso={programme.applications.closesIso}
-                  fallback={`Applications open ${programme.applications.opens}`}
+                  opensIso={programme.applications.opensIso}
+                  closesIso={programme.applications.closesIso}
+                  opensLabel={programme.applications.opens}
+                  // True for the whole open window, so the static shell a
+                  // crawler sees is never a stale announcement.
+                  fallback="Applications are open"
                 />
               </span>
             </p>
