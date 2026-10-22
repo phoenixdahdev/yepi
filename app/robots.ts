@@ -16,7 +16,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       allow: "/",
       // Personal, per-applicant surfaces. Nothing here is useful to a crawler
       // and none of it should appear in a search result.
-      disallow: ["/apply/", "/status", "/status/", "/api/"],
+      disallow: ["/apply/", "/status", "/status/", "/admin", "/admin/", "/api/"],
     },
     sitemap: siteUrl("/sitemap.xml"),
   };

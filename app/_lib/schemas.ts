@@ -259,6 +259,18 @@ export type MaterialsInput = z.infer<typeof materialsSchema>;
 export type ConsentInput = z.infer<typeof consentSchema>;
 export type UploadedFile = z.infer<typeof uploadedFileSchema>;
 
+export const APPLICATION_STATUSES = [
+  "draft",
+  "submitted",
+  "under_review",
+  "finalist",
+  "winner",
+  "waitlisted",
+  "not_selected",
+] as const;
+
+export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
+
 /** What every mutation returns, so the client can branch without throwing. */
 export type ActionResult =
   | { ok: true; next?: string }

@@ -26,8 +26,9 @@ const b64 = (input: Buffer | string) =>
 export type TokenPayload = {
   /** Application document id. */
   id: string;
-  /** What the token is allowed to do, so a status link cannot edit a draft. */
-  scope: "draft" | "status";
+  /** What the token is allowed to do, so a status link cannot edit a draft
+   *  and an applicant's link can never reach the organisers' dashboard. */
+  scope: "draft" | "status" | "admin";
   /** Expiry, epoch ms. */
   exp: number;
 };
@@ -69,11 +70,15 @@ export function verifyToken(
 
 export const DRAFT_COOKIE = "yepi_draft";
 export const STATUS_COOKIE = "yepi_status";
+export const ADMIN_COOKIE = "yepi_admin";
 
 /** A draft should outlive a long, interrupted sitting. */
 export const DRAFT_TTL = 1000 * 60 * 60 * 24 * 30;
 /** A status sign-in link is short-lived; the cookie it sets is not. */
 export const MAGIC_LINK_TTL = 1000 * 60 * 30;
 export const STATUS_TTL = 1000 * 60 * 60 * 24 * 30;
+/** Organisers re-authenticate weekly; this cookie reaches every applicant's
+ *  personal information, so it is deliberately shorter-lived than theirs. */
+export const ADMIN_TTL = 1000 * 60 * 60 * 24 * 7;
 
 export const newId = () => randomBytes(16).toString("hex");

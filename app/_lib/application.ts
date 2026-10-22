@@ -3,6 +3,7 @@ import { applications, ensureIndexes } from "./db";
 import { newId } from "./session";
 import { POLICY_VERSION } from "../_content/organisation";
 import type {
+  ApplicationStatus,
   FounderInput,
   MaterialsInput,
   TractionInput,
@@ -16,14 +17,9 @@ export * from "./schemas";
  * Document shape
  * ------------------------------------------------------------------ */
 
-export type ApplicationStatus =
-  | "draft"
-  | "submitted"
-  | "under_review"
-  | "finalist"
-  | "winner"
-  | "waitlisted"
-  | "not_selected";
+// ApplicationStatus is declared in ./schemas so client code can use it
+// without pulling the database layer into the browser bundle.
+export type { ApplicationStatus };
 
 export type ApplicationDoc = {
   id: string;
@@ -48,11 +44,20 @@ export type ApplicationDoc = {
     /** Which version of the notices they agreed to, for a defensible record. */
     policyVersion: string;
   };
-  /** Organiser-only. Never returned by any applicant-facing query. */
+  /** Organiser-only. Never shown to the applicant. */
   review?: {
+    /** 1-10, one number per reviewer email. */
     scores?: Record<string, number>;
     notes?: string;
   };
+  /** Who changed the status, and when. A status decides who gets funded, so
+   *  it should never be possible to ask "who did this?" and not know. */
+  history?: {
+    at: Date;
+    by: string;
+    from: ApplicationStatus;
+    to: ApplicationStatus;
+  }[];
 };
 
 export { POLICY_VERSION } from "../_content/organisation";
@@ -147,6 +152,85 @@ export async function submitDraft(id: string): Promise<boolean> {
       },
     },
   );
+  return result.matchedCount === 1;
+}
+
+/* ------------------------------------------------------------------ *
+ * Organiser queries
+ * ------------------------------------------------------------------ */
+
+/** Everything except drafts nobody has submitted, newest activity first. */
+export async function listApplications({
+  status,
+  q,
+  includeDrafts = true,
+}: {
+  status?: ApplicationStatus;
+  q?: string;
+  includeDrafts?: boolean;
+} = {}): Promise<ApplicationDoc[]> {
+  const col = await applications();
+  const filter: Record<string, unknown> = {};
+
+  if (status) filter.status = status;
+  else if (!includeDrafts) filter.status = { $ne: "draft" };
+
+  if (q) {
+    // Escaped: a search box must not be able to inject a pattern that
+    // backtracks the database into the ground.
+    const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const rx = { $regex: safe, $options: "i" };
+    filter.$or = [
+      { "founder.fullName": rx },
+      { "founder.email": rx },
+      { "venture.ventureName": rx },
+      { "venture.location": rx },
+    ];
+  }
+
+  return col.find(filter).sort({ updatedAt: -1 }).limit(500).toArray();
+}
+
+export async function countByStatus(): Promise<Record<string, number>> {
+  const col = await applications();
+  const rows = await col
+    .aggregate<{ _id: ApplicationStatus; n: number }>([
+      { $group: { _id: "$status", n: { $sum: 1 } } },
+    ])
+    .toArray();
+  return Object.fromEntries(rows.map((r) => [r._id, r.n]));
+}
+
+export async function setApplicationStatus(
+  id: string,
+  to: ApplicationStatus,
+  by: string,
+): Promise<boolean> {
+  const col = await applications();
+  const current = await col.findOne({ id });
+  if (!current || current.status === to) return Boolean(current);
+
+  const result = await col.updateOne(
+    { id },
+    {
+      $set: { status: to, updatedAt: new Date() },
+      $push: { history: { at: new Date(), by, from: current.status, to } },
+    },
+  );
+  return result.matchedCount === 1;
+}
+
+export async function saveReview(
+  id: string,
+  by: string,
+  { score, notes }: { score?: number; notes?: string },
+): Promise<boolean> {
+  const col = await applications();
+  const set: Record<string, unknown> = { updatedAt: new Date() };
+  if (typeof score === "number") set[`review.scores.${by.replace(/\./g, "_")}`] = score;
+  if (notes !== undefined) set["review.notes"] = notes;
+
+  const result = await col.updateOne({ id }, { $set: set });
   return result.matchedCount === 1;
 }
 
