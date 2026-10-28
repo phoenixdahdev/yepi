@@ -1,6 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { currentDraftId } from "../../_lib/draft-session";
+import { applicationsClosedNow } from "../../_lib/applications";
 
 const MAX_DECK_BYTES = 20 * 1024 * 1024;
 const MAX_SUPPORTING_BYTES = 10 * 1024 * 1024;
@@ -34,6 +35,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
+        if (applicationsClosedNow()) {
+          throw new Error("Applications have closed.");
+        }
+
         // Only someone with a live draft may upload, and only inside their
         // own prefix — the client picks the pathname, so it is not trusted.
         const draftId = await currentDraftId();

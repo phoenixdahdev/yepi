@@ -1,8 +1,10 @@
 import { requireDraft } from "../_lib";
+import { requireApplicationsOpen } from "../../_lib/applications";
 import { MaterialsForm } from "../_components/materials-form";
 import { STEPS } from "../_steps";
 
 export default async function MaterialsStep() {
+  requireApplicationsOpen();
   const draft = await requireDraft();
 
   return (

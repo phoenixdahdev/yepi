@@ -1,8 +1,10 @@
 import { loadDraft } from "./_lib";
+import { requireApplicationsOpen } from "../_lib/applications";
 import { FounderForm } from "./_components/founder-form";
 import { STEPS } from "./_steps";
 
 export default async function FounderStep() {
+  requireApplicationsOpen();
   const draft = await loadDraft();
 
   return (

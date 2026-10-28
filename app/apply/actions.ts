@@ -28,6 +28,7 @@ import {
 } from "../_lib/draft-session";
 import { resumeEmail, sendMail, submittedEmail } from "../_lib/mail";
 import { siteOrigin } from "../_lib/site";
+import { CLOSED_MESSAGE, applicationsClosedNow } from "../_lib/applications";
 import { MAGIC_LINK_TTL, signToken } from "../_lib/session";
 
 const invalid = (error: z.ZodError): ActionResult => ({
@@ -41,6 +42,8 @@ const NO_DRAFT = "Your application session has expired. Please start again.";
 /* ---------------- Step 1 — founder ---------------- */
 
 export async function saveFounder(values: FounderInput): Promise<ActionResult> {
+  if (applicationsClosedNow()) return { ok: false, message: CLOSED_MESSAGE };
+
   const parsed = founderSchema.safeParse(values);
   if (!parsed.success) return invalid(parsed.error);
 
@@ -77,6 +80,8 @@ async function patchStep(
   patch: Record<string, unknown>,
   next: string,
 ): Promise<ActionResult> {
+  if (applicationsClosedNow()) return { ok: false, message: CLOSED_MESSAGE };
+
   const id = await currentDraftId();
   if (!id) return { ok: false, message: NO_DRAFT };
 
@@ -110,6 +115,8 @@ export async function saveTraction(values: TractionInput): Promise<ActionResult>
 }
 
 export async function saveMaterials(values: MaterialsInput): Promise<ActionResult> {
+  if (applicationsClosedNow()) return { ok: false, message: CLOSED_MESSAGE };
+
   const parsed = materialsSchema.safeParse(values);
   if (!parsed.success) return invalid(parsed.error);
 
@@ -134,6 +141,8 @@ export async function saveMaterials(values: MaterialsInput): Promise<ActionResul
 export async function submitApplication(
   values: ConsentInput,
 ): Promise<ActionResult> {
+  if (applicationsClosedNow()) return { ok: false, message: CLOSED_MESSAGE };
+
   const parsed = consentSchema.safeParse(values);
   if (!parsed.success) return invalid(parsed.error);
 

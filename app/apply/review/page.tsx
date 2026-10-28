@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { requireDraft } from "../_lib";
+import { requireApplicationsOpen } from "../../_lib/applications";
 import { ConsentForm } from "../_components/consent-form";
 import { STEPS } from "../_steps";
 
@@ -45,6 +46,7 @@ function Row({ label, value }: { label: string; value?: ReactNode }) {
 }
 
 export default async function ReviewStep() {
+  requireApplicationsOpen();
   const draft = await requireDraft();
   const { founder, venture, traction, materials } = draft;
 

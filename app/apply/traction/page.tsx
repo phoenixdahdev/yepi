@@ -1,8 +1,10 @@
 import { requireDraft } from "../_lib";
+import { requireApplicationsOpen } from "../../_lib/applications";
 import { TractionForm } from "../_components/traction-form";
 import { STEPS } from "../_steps";
 
 export default async function TractionStep() {
+  requireApplicationsOpen();
   const draft = await requireDraft();
 
   return (

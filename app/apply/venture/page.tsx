@@ -1,8 +1,10 @@
 import { requireDraft } from "../_lib";
+import { requireApplicationsOpen } from "../../_lib/applications";
 import { VentureForm } from "../_components/venture-form";
 import { STEPS } from "../_steps";
 
 export default async function VentureStep() {
+  requireApplicationsOpen();
   const draft = await requireDraft();
 
   return (

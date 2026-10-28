@@ -6,6 +6,11 @@
  * documents and needs a real value before launch.
  */
 
+/** Safe in client components: a flag, not a clock read. */
+export function applicationsClosed(): boolean {
+  return programme.applications.closed;
+}
+
 export type ProgrammeDate = {
   label: string;
   value: string;
@@ -51,6 +56,16 @@ export const programme = {
     closes: "Tuesday 27 October 2026, midnight",
     finalistsIso: "2026-10-28T00:00:00+02:00",
     finalists: "Wednesday 28 October 2026",
+
+    /**
+     * The window is shut. Set explicitly rather than inferred from the clock
+     * so the landing page can say so in its static shell — a crawler or a
+     * visitor without JavaScript must not be told applications are open.
+     *
+     * The server enforces the close date as well, so forgetting to flip this
+     * back cannot leave the form accepting submissions.
+     */
+    closed: true,
   },
 
   event: {

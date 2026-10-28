@@ -6,12 +6,13 @@ import { Reveal } from "./_components/reveal";
 import { RiseArrow } from "./_components/rise-arrow";
 import { SmoothScroll } from "./_components/smooth-scroll";
 import { YepiEndorsed, YepiLockup } from "./_components/yepi-mark";
-import { programme } from "./_content/programme";
+import { applicationsClosed, programme } from "./_content/programme";
 import { mentors, portraits, voices } from "./_content/people";
 import { organisation as org } from "./_content/organisation";
 import { siteUrl } from "./_lib/site";
 
-const { event, prize, eligibility } = programme;
+const { event, prize, eligibility, applications } = programme;
+const closed = applicationsClosed();
 
 export const metadata = {
   alternates: { canonical: "/" },
@@ -77,24 +78,20 @@ function LaneRule() {
   );
 }
 
-function ApplyButton({
-  tone = "mint",
-  children = "Apply now",
-}: {
-  tone?: "mint" | "navy";
-  children?: string;
-}) {
+function ApplyButton({ tone = "mint" }: { tone?: "mint" | "navy" }) {
   const skin =
     tone === "mint"
       ? "bg-mint text-navy hover:bg-white"
       : "bg-navy text-white hover:bg-blue";
 
+  // Once the window shuts, the only useful action is checking a submitted
+  // application. Sending people to a form that refuses them is not one.
   return (
     <Link
-      href="/apply"
+      href={closed ? "/status" : "/apply"}
       className={`type-label inline-flex items-center gap-3 rounded-full px-8 py-4 transition-colors duration-200 ease-rise ${skin}`}
     >
-      {children}
+      {closed ? "Check my status" : "Apply now"}
       <span aria-hidden="true">↑</span>
     </Link>
   );
@@ -151,7 +148,9 @@ export default function Home() {
             className="type-label hero-line text-mint"
             style={{ transitionDelay: "100ms" }}
           >
-            Applications are open · Ages {eligibility.ageRange}
+            {closed
+              ? `Applications closed · Finalists announced ${applications.finalists}`
+              : `Applications are open · Ages ${eligibility.ageRange}`}
           </p>
 
           <h1
@@ -165,9 +164,9 @@ export default function Home() {
             className="hero-line mx-auto mt-7 max-w-xl text-body text-white/80"
             style={{ transitionDelay: "280ms" }}
           >
-            Entrepreneurs apply, finalists are selected on merit, mentored
-            and rehearsed, then pitch live to a judging panel on Conference
-            Day, with grants awarded on the spot.
+            {closed
+              ? `Applications closed on ${applications.closes}. Finalists are selected on merit, mentored and rehearsed, then pitch live on Conference Day with grants awarded on the spot.`
+              : "Entrepreneurs apply, finalists are selected on merit, mentored and rehearsed, then pitch live to a judging panel on Conference Day, with grants awarded on the spot."}
           </p>
 
           <div
@@ -179,14 +178,18 @@ export default function Home() {
               <span className="font-semibold text-white">{event.date}</span> ·{" "}
               {event.location} ·{" "}
               <span className="font-semibold text-mint">
-                <Deadline
-                  opensIso={programme.applications.opensIso}
-                  closesIso={programme.applications.closesIso}
-                  opensLabel={programme.applications.opens}
-                  // True for the whole open window, so the static shell a
-                  // crawler sees is never a stale announcement.
-                  fallback="Applications are open"
-                />
+                {closed ? (
+                  "Applications have closed"
+                ) : (
+                  <Deadline
+                    opensIso={applications.opensIso}
+                    closesIso={applications.closesIso}
+                    opensLabel={applications.opens}
+                    // True for the whole open window, so the static shell a
+                    // crawler sees is never a stale announcement.
+                    fallback="Applications are open"
+                  />
+                )}
               </span>
             </p>
           </div>
@@ -466,8 +469,9 @@ export default function Home() {
           </Reveal>
           <Reveal delay={80}>
             <p className="mx-auto mt-6 max-w-md text-body text-navy/70">
-              Applications are open. It takes one sitting, and no documents you
-              don&rsquo;t already have.
+              {closed
+                ? `Applications closed on ${applications.closes}. Finalists are announced on ${applications.finalists}.`
+                : "Applications are open. It takes one sitting, and no documents you don’t already have."}
             </p>
           </Reveal>
           <Reveal delay={140}>
