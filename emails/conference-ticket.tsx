@@ -24,6 +24,11 @@ export type ConferenceTicketProps = {
   firstName?: string;
   /** Absolute origin for images — email clients cannot resolve relative paths. */
   baseUrl?: string;
+  /**
+   * Draft entries never reached the panel, so they must not be thanked for
+   * submitting. Same gift, honest wording.
+   */
+  variant?: "submitted" | "draft";
 };
 
 const { conference, event, prize } = programme;
@@ -53,8 +58,10 @@ const DEFAULT_BASE_URL = process.env.SITE_URL?.startsWith("https://")
 export function ConferenceTicket({
   firstName,
   baseUrl = DEFAULT_BASE_URL,
+  variant = "submitted",
 }: ConferenceTicketProps) {
   const greeting = firstName ? `Hi ${firstName},` : "Hi there,";
+  const submitted = variant === "submitted";
 
   return (
     <Html lang="en-ZA">
@@ -91,18 +98,34 @@ export function ConferenceTicket({
             {/* Thanks */}
             <Section className="bg-white px-10 pt-10 pb-2">
               <Heading className="m-0 text-[28px] font-black leading-[1.15] text-navy">
-                Thank you for entering YEPI.
+                {submitted
+                  ? "Thank you for entering YEPI."
+                  : "Thank you for starting your YEPI entry."}
               </Heading>
               <Text className="mt-5 mb-0 text-[16px] leading-[26px] text-navy">
                 {greeting}
               </Text>
               <Text className="mt-4 mb-0 text-[16px] leading-[26px] text-navy">
-                Applications for the Young Entrepreneurs Pitch Initiative have
-                closed, and we are grateful you put your venture forward. It
-                takes something to write your idea down and hand it to a panel.
+                {submitted ? (
+                  <>
+                    Applications for the Young Entrepreneurs Pitch Initiative
+                    have closed, and we are grateful you put your venture
+                    forward. It takes something to write your idea down and hand
+                    it to a panel.
+                  </>
+                ) : (
+                  <>
+                    Applications for the Young Entrepreneurs Pitch Initiative
+                    have closed. You started an entry this round, which means
+                    you were weighing something up — and that is further than
+                    most people get.
+                  </>
+                )}
               </Text>
               <Text className="mt-4 mb-0 text-[16px] leading-[26px] text-navy">
-                Whatever the outcome, we would like you in the room.
+                {submitted
+                  ? "Whatever the outcome, we would like you in the room."
+                  : "Whatever happens next for your idea, we would like you in the room."}
               </Text>
             </Section>
 
@@ -211,7 +234,8 @@ export function ConferenceTicket({
                 {event.date} · {event.location}
               </Text>
               <Text className="mt-3 mb-0 text-[12px] leading-[20px] text-white opacity-60">
-                You are receiving this because you applied to YEPI.{" "}
+                You are receiving this because you{" "}
+                {submitted ? "applied to" : "started an application to"} YEPI.{" "}
                 <Link
                   href={`${baseUrl}/privacy`}
                   className="text-white underline opacity-80"
