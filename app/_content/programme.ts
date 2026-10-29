@@ -68,6 +68,15 @@ export const programme = {
     closed: true,
   },
 
+  /** The parent conference every applicant is being invited to. */
+  conference: {
+    name: "Wisdom for Business Conference 2026",
+    ticketUrl:
+      "https://www.quicket.co.za/events/401724-inaugural-wisdom-for-business-conference/?ref=link-campaign&lc=YEPI",
+    discountCode: "YEPI",
+    ticketType: "General Ticket",
+  },
+
   event: {
     /** Machine-readable, for the countdown. */
     iso: "2026-10-31T09:00:00+02:00",
