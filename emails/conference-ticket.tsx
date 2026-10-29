@@ -45,9 +45,14 @@ const STEPS = [
   <>Complete your details and confirm your booking.</>,
 ];
 
+/** Images must be absolute and publicly reachable, or they arrive broken. */
+const DEFAULT_BASE_URL = process.env.SITE_URL?.startsWith("https://")
+  ? process.env.SITE_URL.replace(/\/$/, "")
+  : "https://yepi.info";
+
 export function ConferenceTicket({
   firstName,
-  baseUrl = "https://yepi.co.za",
+  baseUrl = DEFAULT_BASE_URL,
 }: ConferenceTicketProps) {
   const greeting = firstName ? `Hi ${firstName},` : "Hi there,";
 
