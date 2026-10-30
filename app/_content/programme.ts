@@ -75,6 +75,9 @@ export const programme = {
       "https://www.quicket.co.za/events/401724-inaugural-wisdom-for-business-conference/?ref=link-campaign&lc=YEPI",
     discountCode: "YEPI",
     ticketType: "General Ticket",
+    /** Finalists are hosted, not discounted — a different tier and a
+     *  one-per-finalist code, so the two must never be mixed up. */
+    finalistTicketType: "VIP Ticket",
   },
 
   event: {
